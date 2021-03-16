@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>클라이언트 2</title>
+    <script src="https://cdn.socket.io/3.1.3/socket.io.min.js" integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script>
+        let host;
+        let port;
+        let socket;
+
+        $(function(){
+            $('#connectButton').on('click', function(event){
+                console.log('connectButton 호출');
+                host = $('#hostInput').val();   // localhost
+                port = $('#portInput').val();   // 3000
+                connectToServer();
+            })
+
+            $('#sendButton').on('click', function(evnet){
+                const sender = $('#sender').val();  // apple
+                const rev = $('#rev').val();        // all
+                const data = $('#data').val();      // 채팅내용..
+
+                // 객체로 만든다.                                 챗으로 만듦       종류 : 텍스트
+                const output = {sender:sender, recepient:rev, command:'chat', type:'text', data:data};
+                console.log(`서버로 보낼 데이터 : ${JSON.stringify(output)}`);  // output을 string형식으로 JSON형식으로 찍는다
+                if(socket == undefined){
+                    alert('서버에 연결하지 못했습니다. 서버 연결을 먼저 해주세요.')
+                    return;
+                }
+                // socket에 emit이라는 message라는 이벤트를 발생시키고 output을 사용할 것이다.
+                socket.emit('message', output);
+            })
+        })
+
+        function connectToServer(){
+            console.log('connectToServer 호출!');
+            const url = `http://${host}:${port}`;   // http://localhost:3000
+            // connect 메소드가 접속하는 것이다.
+            socket = io.connect(url);   // 클라이언트 소켓이 만들어져서 리턴된다.
+            console.log('socket 객체 생성!');
+            // socket이 on(연결) connect를 시도해서 익명함수를 자동으로 호출한다.
+            socket.on('connect', function(){
+                console.log('웹소켓 서버에 연결했습니다.');
+
+                socket.on('message', function(message){
+                    console.log(JSON.stringify(message));
+                    console.log(`수신 메세지 : ${message.sender}, ${message.recepient}, ${message.command}, ${message.type}, ${message.data}`);
+                    
+                    println(`${message.sender} : ${message.recepient}, ${message.command}, ${message.type}, ${message.data}`);
+                })
+            })
+
+            function println(data){
+                $('#result').append(`<p>${data}</p>`);
+            }
+        }
+    </script>
+</head>
+<body>
+    <h2>클라이언트 2</h2>
+    <hr>
+    <p>접속 ip : <input type="text" id="hostInput" value="localhost"></p>
+    <p>접속 port : <input type="text" id="portInput" value="3000"></p>
+    <p><input type="button" id="connectButton" value="서버접속"></p>
+    <hr>
+    <p>보내는 사람 아이디 : <input type="text" id="sender" value="apple"></p>
+    <p>받는 사람 아이디 : <input type="text" id="rev" value="all"></p>
+    <p>메세지 : <input type="text" id="data"></p>
+    <p><input type="button" id="sendButton" value="전송"></p>
+    <hr>
+    <p>결과 : </p>
+    <div id="result"></div>
+</body>
+</html>

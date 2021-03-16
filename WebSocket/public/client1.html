@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>클라이언트 1</title>
+    <script src="https://cdn.socket.io/3.1.3/socket.io.min.js" integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script>
+        let host;
+        let port;
+        let socket;
+
+        $(function(){
+            $('#connectButton').on('click', function(event){
+                console.log('connectButton 호출');
+                host = $('#hostInput').val();   // localhost
+                port = $('#portInput').val();   // 3000
+                connectToServer();
+            })
+        })
+
+        function connectToServer(){
+            console.log('connectToServer 호출!');
+            const url = `http://${host}:${port}`;   // http://localhost:3000
+            // connect 메소드가 접속하는 것이다.
+            socket = io.connect(url);   // 클라이언트 소켓이 만들어져서 리턴된다.
+            console.log('socket 객체 생성!');
+            // socket이 on(연결) connect를 시도해서 익명함수를 자동으로 호출한다.
+            socket.on('connect', function(){
+                console.log('웹소켓 서버에 연결했습니다.');
+            })
+        }
+    </script>
+</head>
+<body>
+    <h2>클라이언트 1</h2>
+    <hr>
+    <p>접속 ip : <input type="text" id="hostInput" value="localhost"></p>
+    <p>접속 port : <input type="text" id="portInput" value="3000"></p>
+    <p><input type="button" id="connectButton" value="서버접속"></p>
+    <hr>
+    <p>결과 : </p>
+    <div id="result"></div>
+</body>
+</html>
