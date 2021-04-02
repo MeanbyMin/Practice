@@ -1,14 +1,13 @@
 const { Builder, By, Key, until } = require("selenium-webdriver");
 const mysql = require("mysql");
-const { cat } = require("shelljs");
 
 const pool = mysql.createPool({
   // connectionLimit: 10, // 동시접속자를 의미하는데, 분초까지 동일한 시간에 접속을 해야 동시접속자로 인정이된다.
-  host: "localhost", // mysql host
+  host: "", // mysql host
   // port: "3306", // mysql port
-  user: "root", // mysql 아이디
-  password: "dnjsqls92", // mysql 비밀번호
-  database: "meanbymin", // mysql database
+  user: "", // mysql 아이디
+  password: "", // mysql 비밀번호
+  database: "", // mysql database
   debug: false, // debug 할것인지 여부
 });
 
@@ -92,8 +91,7 @@ const pool = mysql.createPool({
           if (err) throw err;
           console.log("Connected!");
           let param = resultarr;
-          let sql =
-            "UPDATE mango_restaurant SET r_photo=? WHERE r_restaurant=?";
+          let sql = "UPDATE 테이블명 SET 컬럼명=? WHERE 컬럼명=?";
           pool.query(sql, param, function (err, result) {
             if (err) throw err;
             console.log("DB 추가 완료");

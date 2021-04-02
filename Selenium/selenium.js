@@ -3,11 +3,11 @@ const mysql = require("mysql");
 
 const pool = mysql.createPool({
   // connectionLimit: 10, // 동시접속자를 의미하는데, 분초까지 동일한 시간에 접속을 해야 동시접속자로 인정이된다.
-  host: "localhost", // mysql host
+  host: "", // mysql host
   // port: "3306", // mysql port
-  user: "root", // mysql 아이디
-  password: "dnjsqls92", // mysql 비밀번호
-  database: "meanbymin", // mysql database
+  user: "", // mysql 아이디
+  password: "", // mysql 비밀번호
+  database: "", // mysql database
   debug: false, // debug 할것인지 여부
 });
 
@@ -272,8 +272,9 @@ const pool = mysql.createPool({
           if (err) throw err;
           console.log("Connected!");
           let param = resultarr;
+          // sql로 데이터 저장 설정
           let sql =
-            "INSERT INTO mango_restaurant (r_writer, r_restaurant, r_grade, r_repadd, r_address, r_jibunaddress, r_tel, r_foodtype, r_price, r_parking, r_openhour, r_breaktime, r_lastorder, r_holiday, r_website, r_menu, r_menuprice, r_menuphoto, r_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            "INSERT INTO 테이블명 (r_writer, r_restaurant, r_grade, r_repadd, r_address, r_jibunaddress, r_tel, r_foodtype, r_price, r_parking, r_openhour, r_breaktime, r_lastorder, r_holiday, r_website, r_menu, r_menuprice, r_menuphoto, r_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
           pool.query(sql, param, function (err, result) {
             if (err) throw err;
             console.log("DB 추가 완료");
@@ -323,7 +324,7 @@ const pool = mysql.createPool({
           console.log("Connected!");
           let param = resultarr;
           let sql =
-            "INSERT INTO mango_restaurant (r_writer, r_restaurant, r_grade, r_repadd, r_address, r_jibunaddress, r_tel, r_foodtype, r_price, r_parking, r_openhour, r_breaktime, r_lastorder, r_holiday, r_website, r_menu, r_menuprice, r_menuphoto, r_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            "INSERT INTO 테이블명 (r_writer, r_restaurant, r_grade, r_repadd, r_address, r_jibunaddress, r_tel, r_foodtype, r_price, r_parking, r_openhour, r_breaktime, r_lastorder, r_holiday, r_website, r_menu, r_menuprice, r_menuphoto, r_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
           pool.query(sql, param, function (err, result) {
             if (err) throw err;
             console.log("DB 추가 완료");
